@@ -7,10 +7,16 @@ public class CaptainsMessDebugGUI : MonoBehaviour
 	private CaptainsMess mess;
 	private CaptainsMessNetworkManager networkManager;
 
+	private NetworkIdentity m_Identity;
+
 	public void Awake()
 	{
 		mess = FindObjectOfType(typeof(CaptainsMess)) as CaptainsMess;
 		networkManager = GetComponent<CaptainsMessNetworkManager>();
+	}
+
+	void Start(){
+		m_Identity = GetComponent<NetworkIdentity>();
 	}
 
 	string NetworkDebugString()
@@ -18,7 +24,8 @@ public class CaptainsMessDebugGUI : MonoBehaviour
 		string serverString = "[SERVER]\n";
 		if (NetworkServer.active && networkManager.numPlayers > 0)
 		{
-			serverString += "Hosting at " + Network.player.ipAddress + "\n";
+			//serverString += "Hosting at " + Network.player.ipAddress + "\n";
+			serverString += "Hosting at " + m_Identity.connectionToClient + "\n";
 			serverString += String.Format("Players Ready = {0}/{1}", networkManager.NumReadyPlayers(), networkManager.NumPlayers()) + "\n";
 		}
 		if (networkManager.discoveryServer.running && networkManager.discoveryServer.isServer)
